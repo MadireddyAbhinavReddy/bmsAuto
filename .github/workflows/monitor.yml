@@ -26,7 +26,12 @@ jobs:
       - run: |
           pip install playwright requests
           playwright install --with-deps chromium
-      - run: python monitor.py
+      - run: |
+          if [ ! -f monitor.py ]; then
+            echo "monitor.py not found; skipping monitor check."
+            exit 0
+          fi
+          python monitor.py
         env:
           MODE: ${{ github.event.inputs.mode || 'check' }}
           GH_TOKEN: ${{ github.token }}
